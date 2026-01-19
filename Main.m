@@ -1,17 +1,16 @@
-format longe
+pkg load parallel
 
-KK = 3
+alphas = [0.99, 0.95, 0.9, 0.85, 0.8, 0.75]; % honest stake ratio
+deltas = [2, 3, 4, 5]; % network delay in slots
+KK = 3;
 
-for alpha = [0.99, 0.95, 0.9, 0.85, 0.8, 0.75] % honest stake ratio
-    for delta = [2, 3, 4, 5] % network delay in slots
+params = zeros([(length(alphas) * length(deltas))  3]);
+index = 1;
 
-        ErrorUB = PoSRandomWalk(alpha, delta, KK)
-
-        % write output to file
-        fileName = sprintf("output_%.2f_%d_%d.txt", alpha, delta, KK)
-        file = fopen(fileName, "w")
-        fprintf(file, "alpha=%f delta=%d K=%d\nErrorUB\n", alpha, delta, KK)
-        fdisp(file, ErrorUB)
-        fclose(file)
+for alpha = alphas
+    for delta = deltas
+        params(index++, :) = [alpha, delta, KK];
     end
 end
+
+pararrayfun(nproc-1, @(rowIdx) singleRun(params(rowIdx, :)), 1:rows(params));
