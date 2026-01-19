@@ -24,16 +24,17 @@ end
 toc
 ErrorUB = Error;
 
-St0 = PoWMCWarmupLB(PAD, Alphabet, States);
-Error = zeros(KK, 1);
-tic
-for K = 1:KK
-    % private mining as lower bound
-    St2 = PoSMCConfirmPM(K, Pa, PH, PD, PA, PAD, St0, Alphabet, States);
-    Error(K) = PoWMCFinalLB(PAD, St2, Alphabet, States);
-end
-toc
-ErrorLB = Error;
+% % Lower bound may no longer be relevant for Peras
+% St0 = PoWMCWarmupLB(PAD, Alphabet, States);
+% Error = zeros(KK, 1);
+% tic
+% for K = 1:KK
+%     % private mining as lower bound
+%     St2 = PoSMCConfirmPM(K, Pa, PH, PD, PA, PAD, St0, Alphabet, States);
+%     Error(K) = PoWMCFinalLB(PAD, St2, Alphabet, States);
+% end
+% toc
+% ErrorLB = Error;
 
 % write output to file
 format longe
@@ -44,6 +45,4 @@ file = fopen(fileName, "a")
 fprintf(file, "alpha=%f delta=%d K=%d\n", alpha, delta, KK)
 fdisp(file, "ErrorUB")
 fdisp(file, ErrorUB)
-fdisp(file, "ErrorLB")
-fdisp(file, ErrorLB)
 fclose(file)
