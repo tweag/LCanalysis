@@ -1,15 +1,18 @@
-alpha = 0.9;	% honest stake ratio
-D = 2 * 1/20;	% network delay (measured in block interval)
-				% Cardano 20s per block
+function ErrorUB = PoSRandomWalk(alpha, delta, KK)
+
+% alpha is honest stake ratio
+% delta is network delay, in slots
+% KK is the max number of confirmation to evaluate
+
+D = delta * 1/20; % network delay (measured in block interval)
+                  % Cardano 20s per block
 
 Alphabet = 10;
 States = 19;
-KK = 10;
 % Alphabet is max possible epoch length
 %   need to be large enough to ensure numeric precision of P(j, 2)
 %   as well as negligible probability of larger j
 % States is the number of states in the Markov chain tracked
-% KK is the max number of confirmation to evaluate
 
 [Pa, PH, PD, PA, PAD] = PoSSlotPdf(alpha, D, Alphabet);
 
@@ -36,13 +39,4 @@ ErrorUB = Error;
 % toc
 % ErrorLB = Error;
 
-% write output to file
-format longe
-
-delta = D * 20 % in slots
-fileName = sprintf("output_%.1f_%d_%d.txt", alpha, delta, KK)
-file = fopen(fileName, "a")
-fprintf(file, "alpha=%f delta=%d K=%d\n", alpha, delta, KK)
-fdisp(file, "ErrorUB")
-fdisp(file, ErrorUB)
-fclose(file)
+end
