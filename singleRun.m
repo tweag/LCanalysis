@@ -7,7 +7,7 @@ function res = singleRun(param);
     ErrorUB = PoSRandomWalk(alpha, delta, KK);
 
     % write output to file
-    fileName = sprintf("output_%.2f_%d_%d.txt", alpha, delta, KK);
+    fileName = sprintf("results/output_%.2f_%d_%d.txt", alpha, delta, KK);
     file = fopen(fileName, "w");
     fprintf(file, "alpha=%f delta=%d K=%d\nErrorUB\n", alpha, delta, KK);
     fdisp(file, ErrorUB);
