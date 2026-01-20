@@ -1,4 +1,5 @@
 pkg load parallel
+pkg load statistics
 
 alphas = [0.99, 0.95, 0.9, 0.85, 0.8, 0.75]; % honest stake ratio
 deltas = [2, 3, 4, 5]; % network delay in slots

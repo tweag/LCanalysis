@@ -7,10 +7,12 @@ function res = singleRun(param);
     ErrorUB = PoSRandomWalk(alpha, delta, KK);
 
     % write output to file
-    fileName = sprintf("results/output_%.2f_%d_%d.txt", alpha, delta, KK);
+    fileName = sprintf("results/output_%.2f_%d_%d.csv", alpha, delta, KK);
     file = fopen(fileName, "w");
-    fprintf(file, "alpha=%f delta=%d K=%d\nErrorUB\n", alpha, delta, KK);
-    fdisp(file, ErrorUB);
+    fprintf(file, "alpha,delta,K,errorUB\n");
+    for K = 1:KK
+        fprintf(file, "%.2f,%d,%d,%.10e\n", alpha, delta, K, ErrorUB(K))
+    end
     fclose(file);
     printf("saved %s\n", fileName);
 
