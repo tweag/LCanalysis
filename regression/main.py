@@ -1,8 +1,8 @@
-#!/usr/bin/python
-
 import csv
 from frozendict import frozendict
 from glob import glob
+import numpy as np
+from sklearn.linear_model import LinearRegression
 
 def filter_data(data, alpha = None, delta = None, K = None):
     result = {}
@@ -39,7 +39,25 @@ def build_data():
     return data
 
 def main():
-    pass
+    data = build_data()
+    filtered = filter_data(data, alpha = 0.90, delta = 2)
+
+    inputs = np.array([])
+    outputs = np.array([])
+    for (k,v) in filtered.items():
+        input = k["K"]
+        output = np.log(v) # I suspect the log of the upper bound is linear
+        # strange behavior for K = 1; the paper starts with K = 2
+        if input == 1:
+            continue
+        inputs = np.append(inputs, input)
+        outputs = np.append(outputs, output)
+    inputs = inputs.reshape((-1, 1))
+
+    model = LinearRegression().fit(inputs, outputs)
+    r_sq = model.score(inputs, outputs)
+
+    print(f"r_sq: {r_sq}\nintercept: {model.intercept_}\nslope: {model.coef_}")
     
 if __name__ == "__main__":
     main()
